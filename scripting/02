@@ -1,10 +1,10 @@
 #!/bin/bash
 
 file="/var/log/update_script.log"
-if [ ! crontab -l | grep -F "0 4 * * 0 sh 02" ]
+if  ! crontab -l | grep -F "/home/user/init/scripting/02";
 then
 	crontab -l > mycron
-	echo "0 4 * * 0 sh 02"
+	echo "0 4 * * 0 /home/user/init/scripting/02" >> mycron
 	crontab mycron
 	rm mycron
 fi
