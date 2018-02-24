@@ -1,6 +1,13 @@
 #!/bin/bash
 
 file="/var/log/update_script.log"
+if [ ! crontab -l | grep -F "0 4 * * 0 sh 02" ]
+then
+	crontab -l > mycron
+	echo "0 4 * * 0 sh 02"
+	crontab mycron
+	rm mycron
+fi
 if [ -f "$file" ]
 then
 	sudo chmod 777 "$file"
