@@ -1,0 +1,14 @@
+#!/bin/bash
+
+file="/var/log/update_script.log"
+if [ -f "$file" ]
+then
+	sudo chmod 777 "$file"
+	sudo apt-get update >> "$file"
+	sudo apt-get upgrade >> "$file"
+else
+	sudo touch "$file"
+	sudo chmod 777 "$file"
+	sudo apt-get update >> "$file"
+	sudo apt-get upgrade >> "$file"
+fi
