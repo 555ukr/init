@@ -1,10 +1,18 @@
 #!/bin/bash
 
+if  ! crontab -l | grep -F "/home/user/init/scripting/04";
+then
+	crontab -l > mycron_04
+	echo "0 0 * * * /home/user/init/scripting/04" >> mycron_04
+	crontab mycron_04
+	rm mycron_04
+fi
+
 if [ ! -f "md5" ]
 then
 	sudo touch md5
 	sudo chmod 777 md5
-	md5sum file | cut -d " " -f1 > md5
+	md5sum /etc/crontab | cut -d " " -f1 > md5
 fi
 
 if [ ! -f "md5_c" ]
@@ -13,13 +21,11 @@ then
 	sudo chmod 777 md5_c
 fi
 
-md5sum file | cut -d " " -f1 > md5_c
+md5sum /etc/crontab | cut -d " " -f1 > md5_c
 
 cmp -s md5_c md5 > /dev/null
 if [ $? -eq 1 ]
 then
-	echo "difference"
-	md5sum file | cut -d " " -f1 > md5
-else
-	echo "same"
+	echo "Changes has been made\n$(date)" | mail -s "File" root
+	md5sum /etc/crontab | cut -d " " -f1 > md5
 fi
